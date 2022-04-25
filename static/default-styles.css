@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css?family=Inter:400");
+@import url("https://rsms.me/inter/inter.css");
 @import url("https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css");
 
-@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/horizon-light.css")
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/one-light.css")
 screen;
 
-@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/horizon-dark.css")
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/onedark.css")
   screen and (prefers-color-scheme: dark);
 
 /* https://barelyhuman.github.io/zinccolors/ */
