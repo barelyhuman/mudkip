@@ -2,3 +2,4 @@ mudkip
 dist
 .DS_Store
 bin
+.env
