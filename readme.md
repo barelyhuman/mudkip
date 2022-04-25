@@ -4,7 +4,7 @@
 
 ## Documentation
 
-You can read it on the website
+You can read it on the [website](https://mudkip.reaper.im)
 or if locally cloned, go through the `docs` folders
 
 ## License
