@@ -13,4 +13,6 @@ mudkip 0.1.0
   --stylesheet      : custom stylesheet
 ```
 
+[CI/CD &rarr;](/ci)
+
 [&larr; Back](/getting-started)
