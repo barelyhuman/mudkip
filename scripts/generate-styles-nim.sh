@@ -14,6 +14,9 @@ cd "$PROJECT_DIR"
 
 cat > src/styles.nim << EOF
 proc defaultStyles*():string =
+    ## GENERATED CODE
+    ## This file is generated using the generate-styles-nim.sh file with styles 
+    ## from the original static/default-styles.css
     return r"""$MINIFIED_OUTPUT"""
 EOF
 
