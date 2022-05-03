@@ -30,19 +30,19 @@ proc ctrlCHandler*() {.noconv.} =
   ## on the cli
   quit()
 
-proc getCurrentTimeStamp*():string=
+proc getCurrentTimeStamp*(): string =
   return "[" & getTime().format("HH:mm:ss") & "] "
 
 proc toAnsi(color: string, bold: bool = false): string =
-    if bold:
-        return "\e[1;"&color&"m"
-    return "\e["&color&"m"
+  if bold:
+    return "\e[1;"&color&"m"
+  return "\e["&color&"m"
 
 proc info*[T](msg: T): string =
-    return toAnsi(CYAN, true) & msg & toAnsi(RESET)
+  return toAnsi(CYAN, true) & msg & toAnsi(RESET)
 
 proc success*[T](msg: T): string =
-    return toAnsi(GREEN, true) & msg & toAnsi(RESET)
+  return toAnsi(GREEN, true) & msg & toAnsi(RESET)
 
 proc error*[T](msg: T): string =
-    return toAnsi(RED) & msg & toAnsi(RESET)
+  return toAnsi(RED) & msg & toAnsi(RESET)

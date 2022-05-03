@@ -129,8 +129,8 @@ proc mudkip(input: string, output: string, stylesheetPath: string, poll: bool) =
     while true:
       # styles are polled by the main thread
       if stylesheetPath.len > 0:
-        writeStyles(stylesheetPath,output)
-      else: 
+        writeStyles(stylesheetPath, output)
+      else:
         writeDefaultStyles(output)
 
       # wait on the channel for updates
