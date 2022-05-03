@@ -13,9 +13,13 @@ type FileMeta = object
   lastModifiedTime: times.Time
   outputPath: string
 
+type ThreadState = object
+  page: int
+  statePtr: ptr seq[seq[FileMeta]]
+
 var
   chan: Channel[string]
-  threads: array[4, Thread[int]]
+  threads: array[4, Thread[ThreadState]]
   lock: Lock
   fileData: seq[FileMeta]
   sharedFilesState {.guard: lock.}: seq[seq[FileMeta]]
@@ -85,20 +89,21 @@ proc updateFileMeta(input: string, output: string) =
   withLock lock:
     sharedFilesState = createChunks(files, int(len(files)/maxThreads))
 
-proc watchBunch(page: int){.thread.} =
+proc watchBunch(tstate: ThreadState){.thread.} =
   ## Based on a given page / thread number , pick up a batch from
   ## the chunks and watch those files every second for changes
   ## if a file changes, send that through for recompilation and
   ## also ask the main thread to update the shared state
 
   while true:
-    let data = cast[ptr seq[seq[FileMeta]]](sharedFilesStatePtr)[]
-    let batchToProcess = data[page]
+    let data = tstate.statePtr[]
+    let batchToProcess = data[tstate.page]
 
     for fileMeta in batchToProcess:
       let latestModTime = getLastModificationTime(fileMeta.path)
       if latestModTime != fileMeta.lastModifiedTime:
         chan.send(fileMeta.path)
+
     # force add a 750ms sleep to avoid forcing commands every millisecond
     sleep(750)
 
@@ -124,7 +129,10 @@ proc mudkip(input: string, output: string, stylesheetPath: string, poll: bool) =
     updateFileMeta(input, output)
 
     for i in 0..high(threads):
-      createThread[int](threads[i], watchBunch, i)
+      createThread[ThreadState](threads[i], watchBunch, ThreadState(
+        page: i,
+        statePtr: sharedFilesStatePtr
+      ))
 
     while true:
       # styles are polled by the main thread
