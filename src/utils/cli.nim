@@ -25,10 +25,6 @@ proc writeHelp*() =
   """
   quit()
 
-proc ctrlCHandler*() {.noconv.} =
-  ## Declare the actions that ctrl+c will trigger
-  ## on the cli
-  quit()
 
 proc getCurrentTimeStamp*(): string =
   return "[" & getTime().format("HH:mm:ss") & "] "

@@ -149,10 +149,11 @@ proc mudkip(input: string, output: string, stylesheetPath: string, poll: bool) =
         fileToHTML(tried.msg, output)
       sleep(500)
 
-    joinThreads(threads)
-    deinitLock(lock)
-
-
+proc ctrlCHandler() {.noconv.} =
+  chan.close()
+  joinThreads(threads)
+  deinitLock(lock)
+  quit()
 
 setControlCHook(ctrlCHandler)
 
