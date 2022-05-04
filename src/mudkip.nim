@@ -97,7 +97,6 @@ proc fileToHTML(path: string, output: string) =
 
   let targetFile = changeFileExt(tail, "html");
 
-  createDir(output);
   writeFile(joinPath(output, targetFile), html)
 
 proc processFiles(files: seq[FileMeta]) =
@@ -148,8 +147,9 @@ proc watchBunch(tstate: ThreadState){.thread.} =
 
 proc mudkip() =
   var files = getFilesToProcess(appState.input, appState.output)
-
   fileData = files
+
+  createDir(appState.output);
 
   if appState.stylesheetPath.len > 0:
     writeStyles(appState.stylesheetPath, appState.output)
