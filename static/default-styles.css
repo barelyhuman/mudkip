@@ -44,7 +44,7 @@ body {
   font-weight: 400;
   line-height: 1.75;
   color: var(--text);
-  max-width: 80ch;
+  max-width: 100ch;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -119,6 +119,27 @@ a {
 a:hover {
   color: var(--text);
   text-decoration: underline;
+}
+
+.layout-container {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+}
+
+nav.sidebar {
+  min-width: 250px;
+  max-width: 350px;
+}
+
+nav.sidebar li {
+  list-style-type: none;
+}
+
+nav.sidebar li::before {
+  content: "\2192";
+  color: var(--muted);
+  margin-inline-end: 1ch;
 }
 
 @media screen and (prefers-color-scheme: dark) {

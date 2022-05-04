@@ -1,0 +1,4 @@
+- [Home](/)
+  - [Getting Started](/getting-started)
+  - [CLI Flag Reference](/cli)
+  - [CI/CD Snippets](/ci)

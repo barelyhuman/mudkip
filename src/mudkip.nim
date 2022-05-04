@@ -17,7 +17,15 @@ type ThreadState = object
   page: int
   statePtr: ptr seq[seq[FileMeta]]
 
+type AppState = ref object
+  input: string
+  output: string
+  stylesheetPath: string
+  poll: bool
+
+
 var
+  appState: AppState
   chan: Channel[string]
   threads: array[4, Thread[ThreadState]]
   lock: Lock
@@ -27,11 +35,37 @@ var
 
 let maxThreads = len(threads)
 
+# init app state
+new(appState)
+
+proc isSidebarFile(path: string): bool =
+  let (_, tail) = splitPath(normalizedPath(path))
+  if tail == "_sidebar.md":
+    return true
+  return false
+
 proc writeDefaultStyles(path: string) =
   writeFile(joinPath(path, "style.css"), defaultStyles())
 
 proc writeStyles(stylesheetPath: string, output: string) =
   copyFile(stylesheetPath, joinPath(output, "style.css"))
+
+proc buildSidebar(): string =
+  var sidebarContent: string = ""
+
+  var sidebarFilePath = joinPath([appState.input, "_sidebar.md"])
+
+  if fileExists(sidebarFilePath):
+    let sidebar = open(sidebarFilePath);
+    defer: sidebar.close
+    sidebarContent = sidebar.readAll()
+
+  if len(sidebarContent) == 0:
+    return ""
+
+  return r"""<section>
+  <nav class="sidebar">""" & markdown(sidebarContent) &
+  r"""</nav></section>"""
 
 proc fileToHTML(path: string, output: string) =
   if fileExists(path) == false:
@@ -49,7 +83,8 @@ proc fileToHTML(path: string, output: string) =
   """
   html = html & r"""
   <body>
-  """ & markdown(fileContent) & r"""
+  <div class="layout-container">
+  """ & buildSidebar() & r"""<section>""" & markdown(fileContent) & r"""</section></div>
   <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"></script>
   <script>
     hljs.highlightAll();
@@ -67,6 +102,9 @@ proc fileToHTML(path: string, output: string) =
 
 proc processFiles(files: seq[FileMeta]) =
   for file in files:
+    if isSidebarFile(file.path):
+      continue
+
     fileToHTML(file.path, file.outputPath)
 
 proc getFilesToProcess(path: string, output: string): seq[FileMeta] =
@@ -87,7 +125,7 @@ proc updateFileMeta(input: string, output: string) =
   var files = getFilesToProcess(input, output)
   fileData = files
   withLock lock:
-    sharedFilesState = createChunks(files, int(len(files)/maxThreads))
+    sharedFilesState = createChunks(files, maxThreads)
 
 proc watchBunch(tstate: ThreadState){.thread.} =
   ## Based on a given page / thread number , pick up a batch from
@@ -108,25 +146,24 @@ proc watchBunch(tstate: ThreadState){.thread.} =
     sleep(750)
 
 
-
-proc mudkip(input: string, output: string, stylesheetPath: string, poll: bool) =
-  var files = getFilesToProcess(input, output)
+proc mudkip() =
+  var files = getFilesToProcess(appState.input, appState.output)
 
   fileData = files
 
-  if stylesheetPath.len > 0:
-    writeStyles(stylesheetPath, output)
+  if appState.stylesheetPath.len > 0:
+    writeStyles(appState.stylesheetPath, appState.output)
   else:
-    writeDefaultStyles(output)
+    writeDefaultStyles(appState.output)
 
   processFiles(files)
 
-  if poll:
-    echo "Watching: ", input
+  if appState.poll:
+    echo "Watching: ", appState.input
     initLock(lock)
     chan.open()
 
-    updateFileMeta(input, output)
+    updateFileMeta(appState.input, appState.output)
 
     for i in 0..high(threads):
       createThread[ThreadState](threads[i], watchBunch, ThreadState(
@@ -136,29 +173,35 @@ proc mudkip(input: string, output: string, stylesheetPath: string, poll: bool) =
 
     while true:
       # styles are polled by the main thread
-      if stylesheetPath.len > 0:
-        writeStyles(stylesheetPath, output)
+      if appState.stylesheetPath.len > 0:
+        writeStyles(appState.stylesheetPath, appState.output)
       else:
-        writeDefaultStyles(output)
+        writeDefaultStyles(appState.output)
 
       # wait on the channel for updates
       let tried = chan.tryRecv()
       if tried.dataAvailable:
-        updateFileMeta(input, output)
-        echo getCurrentTimeStamp() & info("Recompiling: "), tried.msg
-        fileToHTML(tried.msg, output)
+        echo tried.msg
+        updateFileMeta(appState.input, appState.output)
+        if isSidebarFile(tried.msg):
+          echo getCurrentTimeStamp() & info("Changed _sidebar, recompiling all files.")
+          processFiles(files)
+        else:
+          echo getCurrentTimeStamp() & info("Recompiling: "), tried.msg
+          fileToHTML(tried.msg, appState.output)
+
       sleep(500)
+
+    joinThreads(threads)
 
 proc ctrlCHandler() {.noconv.} =
   chan.close()
-  joinThreads(threads)
   deinitLock(lock)
   quit()
 
 setControlCHook(ctrlCHandler)
 
 proc cli() =
-
   var
     argCtr: int
     poll: bool
@@ -200,7 +243,12 @@ proc cli() =
     of cmdEnd:
       discard
 
-  mudkip(input, output, stylesheetPath, poll)
+  appState.input = input
+  appState.output = output
+  appState.stylesheetPath = stylesheetPath
+  appState.poll = poll
+
+  mudkip()
   echo success("Generated Docs in : "), output
 
 
