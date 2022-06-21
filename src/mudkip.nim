@@ -3,6 +3,8 @@ import "std/os"
 import "markdown"
 import "std/locks"
 import "std/times"
+import "std/re"
+
 import "./utils/chunks"
 import "./utils/cli"
 
@@ -22,6 +24,7 @@ type AppState = ref object
   output: string
   stylesheetPath: string
   poll: bool
+  baseUrl: string
 
 
 var
@@ -62,6 +65,11 @@ proc buildSidebar(): string =
 
   if len(sidebarContent) == 0:
     return ""
+
+  if appState.baseUrl != "/":
+    echo "using custom base url"
+    sidebarContent = replace(sidebarContent, re"\]\(\/",
+        "]"&"("&appState.baseUrl)
 
   return r"""<section>
   <nav class="sidebar">""" & markdown(sidebarContent) &
@@ -207,12 +215,14 @@ proc cli() =
     poll: bool
     input: string
     output: string
+    baseUrl: string
     stylesheetPath: string
 
   # default values
   input = "docs"
   output = "dist"
   poll = false
+  baseUrl = "/"
 
   for kind, key, value in getOpt():
     case kind
@@ -231,6 +241,8 @@ proc cli() =
         writeHelp()
       of "p", "poll":
         poll = true
+      of "baseUrl":
+        baseUrl = value
       of "stylesheet":
         stylesheetPath = value
       of "i", "in":
@@ -247,6 +259,7 @@ proc cli() =
   appState.output = output
   appState.stylesheetPath = stylesheetPath
   appState.poll = poll
+  appState.baseUrl = baseUrl
 
   mudkip()
   echo success("Generated Docs in : "), output
