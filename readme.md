@@ -24,7 +24,7 @@ nimble build -d:release
 
 ## Documentation
 
-You can read it on the [website](https://mudkip.reaper.im) (which, mudkip generated)
+You can read it on the [website](https://barelyhuman.github.io/mudkip) (which, mudkip generated)
 or if locally cloned, go through the `docs` folders
 
 ## License
