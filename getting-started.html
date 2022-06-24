@@ -1,0 +1,48 @@
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+    <body>
+  <div class="layout-container">
+  <section>
+  <nav class="sidebar"><p><a href="/mudkip/">Home</a></p>
+<p><a href="/mudkip/getting-started">Getting Started</a></p>
+<p><a href="/mudkip/sidebar">Sidebar</a></p>
+<p><a href="/mudkip/cli">CLI Flag Reference</a></p>
+<p><a href="/mudkip/ci">CI/mudkip/CD Snippets</a></p>
+</nav></section><section><h3>mudkip</h3>
+<h1>Getting Started</h1>
+<p>Since, it's a tiny little cmd line utility, all you do is execute a few commands
+for your desired output.</p>
+<h3>Installation</h3>
+<p>You should be able to get a binary for your specific system from the <a href="https://github.com/barelyhuman/mudkip/releases">github releases</a> of this project or compile it from source if you like doing things that way (can't judge, can I?)</p>
+<h3>Usage</h3>
+<ul>
+<li>In the most ideal cases, you'll have a folder named <code>docs</code> with all the markdown files in it.
+and all you have to do is run <code>mudkip</code> to generate what you see if you are reading this documentation on the website
+<pre><code class="language-sh">    $ mudkip
+</code></pre>
+</li>
+<li>In a less ideal situation you'd need to specify the folder to convert and the output of the conversion
+<pre><code class="language-sh">    $ mudkip --in='docs' --out='dist'
+</code></pre>
+</li>
+</ul>
+<h3>Development Helpers</h3>
+<p>A few flags that'll help when working with these docs.</p>
+<pre><code class="language-sh">    $ mudkip --poll # run the conversion every 3 seconds
+</code></pre>
+<h3>Customize</h3>
+<p>Yeah, I said it's not customizable, but it's not like you don't lie. Anyway, the only set of customization offered is that of styles.</p>
+<p>You can refer the <code>static/default-styles.css</code> from the <a href="https://github.com/barelyhuman/mudkip">source code</a> to see what the default styles are, also you can add in your styles using the below flag</p>
+<pre><code class="language-sh">    $ mudkip --stylesheet='./styles.css'
+</code></pre>
+<p>This will copy your stylesheet to the destination instead of writing the default style</p>
+<p><a href="/cli">CLI Flags →</a></p>
+<p><a href="/">← Back</a></p>
+</section></div>
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  </body>
+  
