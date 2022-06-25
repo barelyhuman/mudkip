@@ -1,6 +1,8 @@
 import "std/os"
 import "std/times"
 
+import "./version"
+
 const RED = "31"
 const GREEN = "32"
 const CYAN = "36"
@@ -10,7 +12,7 @@ const RESET = "0"
 ## for the cli side of things for mudkip
 
 proc writeVersion*() =
-  echo getAppFilename().extractFilename(), " 0.1.0"
+  echo getAppFilename().extractFilename() & " " & currentVersion()
 
 proc writeHelp*() =
   writeVersion()
@@ -22,6 +24,7 @@ proc writeHelp*() =
   -i, --in          : folder to convert (contains markdown files) (default: docs)
   -o, --out         : folder to place the converted files (default: dist)
   --stylesheet      : custom stylesheet
+  --baseurl         : use a different base url (default: / )
   """
   quit()
 
