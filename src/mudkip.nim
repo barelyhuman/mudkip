@@ -67,7 +67,6 @@ proc buildSidebar(): string =
     return ""
 
   if appState.baseUrl != "/":
-    echo "using custom base url"
     sidebarContent = replace(sidebarContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
 
@@ -82,7 +81,11 @@ proc fileToHTML(path: string, output: string) =
   let f = open(path)
   defer: f.close()
 
-  let fileContent = f.readAll()
+  var fileContent = f.readAll()
+
+  if appState.baseUrl != "/":
+    fileContent = replace(fileContent, re"\]\(\/",
+        "]"&"("&appState.baseUrl)
 
   var html = r"""
   <head>
@@ -241,7 +244,7 @@ proc cli() =
         writeHelp()
       of "p", "poll":
         poll = true
-      of "baseUrl":
+      of "baseurl":
         baseUrl = value
       of "stylesheet":
         stylesheetPath = value
