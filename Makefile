@@ -6,3 +6,6 @@ build: version
 
 cross: version
 	./scripts/cross-compile.sh
+
+release: cross
+	./scripts/create-release.sh
