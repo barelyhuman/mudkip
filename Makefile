@@ -8,4 +8,5 @@ cross: version
 	./scripts/cross-compile.sh
 
 release: cross
+	rm -rf bin
 	./scripts/create-release.sh
