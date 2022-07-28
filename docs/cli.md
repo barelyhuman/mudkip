@@ -3,7 +3,7 @@
 # CLI Flags
 
 ```sh
-mudkip 0.1.0
+mudkip v0.1.5
 
   -h, --help        : show help
   -v, --version     : show version
@@ -11,6 +11,7 @@ mudkip 0.1.0
   -i, --in          : folder to convert (contains markdown files) (default: docs)
   -o, --out         : folder to place the converted files (default: dist)
   --stylesheet      : custom stylesheet
+  --baseurl         : use a different base url (default: / ) (added in v0.1.5)
 ```
 
 [CI/CD &rarr;](/ci)

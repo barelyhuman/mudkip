@@ -41,6 +41,19 @@ You can refer the `static/default-styles.css` from the [source code](https://git
 
 This will copy your stylesheet to the destination instead of writing the default style
 
+### Github Pages / Custom base URL
+
+Not every hosting platform allows you to have a custom domain and in various cases you'd like the documentation to use the the custom sub path. 
+
+In which case you can specify a custom base URL by using the `--baseurl` flag. 
+
+```
+mudkip --baseurl='/mudkip/'
+```
+
+This will replace any markdown urls that start with `/` to `/mudkip/` and your hosting service can handle the rest
+
+
 [CLI Flags &rarr;](/cli)
 
 [&larr; Back](/)
