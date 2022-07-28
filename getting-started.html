@@ -37,6 +37,12 @@ and all you have to do is run <code>mudkip</code> to generate what you see if yo
 <pre><code class="language-sh">    $ mudkip --stylesheet='./styles.css'
 </code></pre>
 <p>This will copy your stylesheet to the destination instead of writing the default style</p>
+<h3>Github Pages / Custom base URL</h3>
+<p>Not every hosting platform allows you to have a custom domain and in various cases you'd like the documentation to use the the custom sub path.</p>
+<p>In which case you can specify a custom base URL by using the <code>--baseurl</code> flag.</p>
+<pre><code>mudkip --baseurl='/mudkip/'
+</code></pre>
+<p>This will replace any markdown urls that start with <code>/</code> to <code>/mudkip/</code> and your hosting service can handle the rest</p>
 <p><a href="/mudkip/cli">CLI Flags →</a></p>
 <p><a href="/mudkip/">← Back</a></p>
 </section></div>
