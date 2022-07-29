@@ -1,0 +1,38 @@
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+    <body>
+  <div class="layout-container">
+  <section><p>@import url(&quot;https://rsms.me/raster/raster2.css?v=20&quot;);</p>
+<p>:root {
+/* palette */
+--light: #f8f9fa;
+--dark: #212529;
+--text: #343a40;
+--text-dark: #f8f9fa;
+--link-decoration: underline rgba(0, 0, 0, 0.3);
+--link-decoration-dark: underline rgba(255, 255, 255, 0.3);</p>
+<p>--fontSize: 14px;
+--monoFont: monospace;
+--foreground-color: var(--text);
+--background-color: var(--light);
+}</p>
+<p>a {
+text-decoration: var(--link-decoration);
+}</p>
+<p>@media (prefers-color-scheme: dark) {
+:root {
+--foreground-color: var(--text-dark);
+--background-color: var(--dark);
+}</p>
+<p>a {
+text-decoration: var(--link-decoration-dark);
+}
+}</p>
+</section></div>
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+  </body>
+  
