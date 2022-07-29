@@ -1,5 +1,13 @@
 ### mudkip
 
+#### Index
+
+- [Home](/)
+- [Getting Started](/getting-started)
+- [Sidebar](/sidebar)
+- [CLI Flag Reference](/cli)
+- [CI/CD Snippets](/ci)
+
 # CLI Flags
 
 ```sh
@@ -16,4 +24,4 @@ mudkip v0.1.5
 
 [CI/CD &rarr;](/ci)
 
-[&larr; Back](/getting-started)
+[&larr; Back](/sidebar)

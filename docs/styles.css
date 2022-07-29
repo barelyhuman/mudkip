@@ -1,0 +1,31 @@
+@import url("https://rsms.me/raster/raster2.css?v=20");
+
+:root {
+  /* palette */
+  --light: #f8f9fa;
+  --dark: #212529;
+  --text: #343a40;
+  --text-dark: #f8f9fa;
+  --link-decoration: underline rgba(0, 0, 0, 0.3);
+  --link-decoration-dark: underline rgba(255, 255, 255, 0.3);
+
+  --fontSize: 14px;
+  --monoFont: monospace;
+  --foreground-color: var(--text);
+  --background-color: var(--light);
+}
+
+a {
+  text-decoration: var(--link-decoration);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-color: var(--text-dark);
+    --background-color: var(--dark);
+  }
+
+  a {
+    text-decoration: var(--link-decoration-dark);
+  }
+}

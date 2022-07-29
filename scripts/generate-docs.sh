@@ -5,6 +5,6 @@ curl -o mudkip.tgz -L https://github.com/barelyhuman/mudkip/releases/latest/down
 tar -xvzf mudkip.tgz
 install linux-amd64/mudkip /usr/local/bin
 
-mudkip --baseurl='/mudkip/'
+mudkip --baseurl='/mudkip/' --stylesheet='./docs/styles.css'
 
 
