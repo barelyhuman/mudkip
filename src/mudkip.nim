@@ -1,14 +1,10 @@
 import parseopt
-import "std/os"
-import "markdown"
-import "std/locks"
-import "std/times"
-import "std/re"
-
+import std/os, htmlgen, locks, times, re
 import "./utils/chunks"
 import "./utils/cli"
-
 import "./styles"
+import "markdown"
+
 
 type FileMeta = object
   path: string
@@ -70,9 +66,11 @@ proc buildSidebar(): string =
     sidebarContent = replace(sidebarContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
 
-  return r"""<section>
-  <nav class="sidebar">""" & markdown(sidebarContent) &
-  r"""</nav></section>"""
+  return section(
+    nav(class = "sidebar",
+      markdown(sidebarContent)
+    )
+  )
 
 proc fileToHTML(path: string, output: string) =
   if fileExists(path) == false:
@@ -87,21 +85,17 @@ proc fileToHTML(path: string, output: string) =
     fileContent = replace(fileContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
 
-  var html = r"""
-  <head>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  """
-  html = html & r"""
-  <body>
-  <div class="layout-container">
-  """ & buildSidebar() & r"""<section>""" & markdown(fileContent) & r"""</section></div>
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"></script>
-  <script>
-    hljs.highlightAll();
-  </script>
-  </body>
-  """
+  var html = html(
+      head(link(rel = "stylesheet", href = "style.css")),
+      body(
+        `div`(class = "layout-container",
+            buildSidebar(),
+            section(markdown(fileContent))
+    ),
+        script(src = "https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"),
+            script("hljs.highlightAll()")
+    )
+  )
 
   var targetPath = normalizedPath(path)
   let (_, tail) = splitPath(targetPath)
