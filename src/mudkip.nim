@@ -49,6 +49,23 @@ proc writeDefaultStyles(path: string) =
 proc writeStyles(stylesheetPath: string, output: string) =
   copyFile(stylesheetPath, joinPath(output, "style.css"))
 
+#[
+  TODO:
+    - write mudkip.js's nim code and embed that into this cli
+    - transfer the embedded code to the dest directory
+  
+  CODE: mudkipjs.nim
+    - will handle creating a search index for the website 
+    - this index is only visible if javascript is enabled 
+    - follows the same logic as sublime text's fuzzy search
+    - a version of this is already in nim's code base 
+
+    https://github.com/nim-lang/Nim/blob/fe43f751eb9a83f84cc93aa0d752c3658232002d/tools/dochack/fuzzysearch.nim
+
+
+]#
+# proc generateMudkipJS()=
+
 proc buildSidebar(): string =
   var sidebarContent: string = ""
 
@@ -93,7 +110,8 @@ proc fileToHTML(path: string, output: string) =
             section(markdown(fileContent))
     ),
         script(src = "https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"),
-            script("hljs.highlightAll()")
+        script("hljs.highlightAll()"),
+        # script(src = "mudkip.js")
     )
   )
 
