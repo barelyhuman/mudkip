@@ -12,3 +12,5 @@ bin           = @["mudkip"]
 
 requires "nim >= 1.6.4"
 requires "markdown >= 0.8.5"
+requires "jsony >= 1.1.3"
+

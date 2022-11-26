@@ -1,10 +1,18 @@
 import parseopt
-import std/os, htmlgen, locks, times, re
+import std/os, htmlgen, locks, times, re, marshal, strutils
 import "./utils/chunks"
 import "./utils/cli"
 import "./styles"
 import "markdown"
 
+
+# the search index can be simple because
+# the sublime like search handles
+# large content automatically
+type SearchIndexItem = object
+  title: string
+  slug: string
+  contentTokens: seq[string]
 
 type FileMeta = object
   path: string
@@ -31,6 +39,10 @@ var
   fileData: seq[FileMeta]
   sharedFilesState {.guard: lock.}: seq[seq[FileMeta]]
   sharedFilesStatePtr = addr(sharedFilesState)
+  searchIndex: seq[SearchIndexItem]
+
+
+const fuzzyJS = staticRead"mudkip.js"
 
 let maxThreads = len(threads)
 
@@ -45,6 +57,12 @@ proc isSidebarFile(path: string): bool =
 
 proc writeDefaultStyles(path: string) =
   writeFile(joinPath(path, "style.css"), defaultStyles())
+
+proc writeMudkipJS(path: string) =
+  writeFile(joinPath(path, "mudkip.js"), fuzzyJS)
+
+proc writeSearchIndex(path: string) =
+  writeFile(joinPath(path, "search.json"), $$searchIndex)
 
 proc writeStyles(stylesheetPath: string, output: string) =
   copyFile(stylesheetPath, joinPath(output, "style.css"))
@@ -61,10 +79,10 @@ proc writeStyles(stylesheetPath: string, output: string) =
     - a version of this is already in nim's code base 
 
     https://github.com/nim-lang/Nim/blob/fe43f751eb9a83f84cc93aa0d752c3658232002d/tools/dochack/fuzzysearch.nim
-
-
 ]#
-# proc generateMudkipJS()=
+
+
+
 
 proc buildSidebar(): string =
   var sidebarContent: string = ""
@@ -89,6 +107,19 @@ proc buildSidebar(): string =
     )
   )
 
+proc addToSearchIndex(title: string, content: string, displayContent: string,
+    slug: string) =
+
+  var tokens = content.split({'\n', '\t', ','})
+
+  searchIndex.add(
+    SearchIndexItem(
+      title: title,
+      contentTokens: tokens,
+      slug: slug
+    )
+  )
+
 proc fileToHTML(path: string, output: string) =
   if fileExists(path) == false:
     return
@@ -102,16 +133,19 @@ proc fileToHTML(path: string, output: string) =
     fileContent = replace(fileContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
 
+  var compiledContentHTML = markdown(fileContent)
+
   var html = html(
       head(link(rel = "stylesheet", href = "style.css")),
       body(
+        `div`(id = "search-container"),
         `div`(class = "layout-container",
             buildSidebar(),
-            section(markdown(fileContent))
+            section(compiledContentHTML)
     ),
         script(src = "https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js"),
         script("hljs.highlightAll()"),
-        # script(src = "mudkip.js")
+        script(src = "mudkip.js")
     )
   )
 
@@ -120,7 +154,16 @@ proc fileToHTML(path: string, output: string) =
 
   let targetFile = changeFileExt(tail, "html");
 
+  addToSearchIndex(
+    title = path,
+    content = fileContent,
+    displayContent = compiledContentHTML,
+    slug = targetFile
+  )
+
   writeFile(joinPath(output, targetFile), html)
+
+
 
 proc processFiles(files: seq[FileMeta]) =
   for file in files:
@@ -179,7 +222,11 @@ proc mudkip() =
   else:
     writeDefaultStyles(appState.output)
 
+  writeMudkipJS(appState.output)
+
   processFiles(files)
+
+  writeSearchIndex(appState.output)
 
   if appState.poll:
     echo "Watching: ", appState.input
@@ -278,6 +325,8 @@ proc cli() =
 
   mudkip()
   echo success("Generated Docs in : "), output
+
+
 
 
 

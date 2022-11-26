@@ -1,9 +1,11 @@
 @import url("https://rsms.me/inter/inter.css");
 @import url("https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css");
 
-@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/one-light.css") screen;
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/one-light.css")
+screen;
 
-@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/onedark.css") screen and (prefers-color-scheme: dark);
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/onedark.css")
+  screen and (prefers-color-scheme: dark);
 
 /* https://barelyhuman.github.io/zinccolors/ */
 :root {
@@ -102,7 +104,7 @@ pre {
   white-space: pre-wrap;
 }
 
-pre>.hljs {
+pre > .hljs {
   background: var(--base);
   border-radius: 6px;
   padding: 0px !important;
@@ -137,6 +139,39 @@ nav.sidebar li::before {
   content: "\2192";
   color: var(--muted);
   margin-inline-end: 1ch;
+}
+
+#search-container {
+  display: block;
+  width: 80ch;
+  margin:0 auto;
+}
+
+#search-container > input[type="text"] {
+  width: 100%;
+  background: var(--base);
+  color: var(--text);
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 2px solid var(--surface);
+}
+
+#search-container > input[type="text"]:hover {
+  border-color: var(--text);
+}
+
+#search-results {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.mudkip-search-item {
+  margin: 0.25rem;
+  display: block;
 }
 
 @media screen and (prefers-color-scheme: dark) {
