@@ -5,14 +5,7 @@ import "./utils/cli"
 import "./styles"
 import "markdown"
 
-
-# the search index can be simple because
-# the sublime like search handles
-# large content automatically
-type SearchIndexItem = object
-  title: string
-  slug: string
-  contentTokens: seq[string]
+import mudkip/search
 
 type FileMeta = object
   path: string
@@ -107,16 +100,16 @@ proc buildSidebar(): string =
     )
   )
 
-proc addToSearchIndex(title: string, content: string, displayContent: string,
+proc addToSearchIndex(title: string, content: string,
     slug: string) =
 
   var tokens = content.split({'\n', '\t', ','})
 
   searchIndex.add(
-    SearchIndexItem(
-      title: title,
-      contentTokens: tokens,
-      slug: slug
+    createSearchIndexItem(
+      title = title,
+      tokens = tokens,
+      slug = slug
     )
   )
 
@@ -157,7 +150,6 @@ proc fileToHTML(path: string, output: string) =
   addToSearchIndex(
     title = path,
     content = fileContent,
-    displayContent = compiledContentHTML,
     slug = targetFile
   )
 

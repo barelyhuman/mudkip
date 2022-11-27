@@ -3,4 +3,7 @@ dist
 .DS_Store
 bin
 .env
-src/*.js
+
+# generate js file for the `js` that's injected into the dist
+# folder
+src/mudkip.js
