@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 CURRENT_VERSION=`cat .commitlog.release`
-CHANGELOG=$(commitlog --promo | sed -n -e 'H;${x;s/\n/\\n/g;s/^,//;p;}')
+CHANGELOG=$(commitlog g | sed -n -e 'H;${x;s/\n/\\n/g;s/^,//;p;}')
 
 source .env
 
