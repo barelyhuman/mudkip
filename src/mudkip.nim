@@ -105,6 +105,11 @@ proc fileToHTML(path: string, output: string) =
 
   var fileContent = f.readAll()
 
+  var fileNameToProcess = extractFilename(path)
+
+  if not (fileNameToProcess.endsWith("html") or fileNameToProcess.endsWith("md")):
+    return    
+
   if appState.baseUrl != "/":
     fileContent = replace(fileContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
