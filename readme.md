@@ -8,6 +8,11 @@
 - Multi Threaded
 - Atomic File Processor
 - Small (1.1 MB)
+- File Watcher (Monitor file changes)
+
+## Things missing
+
+- File Server (bring your own) (or I'll add it at some point)
 
 ## Installation
 
