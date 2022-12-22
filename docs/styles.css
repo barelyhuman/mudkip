@@ -1,31 +1,186 @@
-@import url("https://rsms.me/raster/raster2.css?v=20");
+@import url("https://rsms.me/inter/inter.css");
+@import url("https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css");
 
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/one-light.css")
+screen;
+
+@import url("https://unpkg.com/highlight.js@11.5.1/styles/base16/onedark.css")
+  screen and (prefers-color-scheme: dark);
+
+/* https://barelyhuman.github.io/zinccolors/ */
 :root {
-  /* palette */
-  --light: #f8f9fa;
-  --dark: #212529;
-  --text: #343a40;
-  --text-dark: #f8f9fa;
-  --link-decoration: underline rgba(0, 0, 0, 0.3);
-  --link-decoration-dark: underline rgba(255, 255, 255, 0.3);
+  --zinc-50: #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-600: #52525b;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+}
 
-  --fontSize: 14px;
-  --monoFont: monospace;
-  --foreground-color: var(--text);
-  --background-color: var(--light);
+/* vars for everything else */
+:root {
+  --base: var(--zinc-50);
+  --surface: var(--zinc-100);
+  --overlay: var(--zinc-200);
+  --text: var(--zinc-700);
+  --subtle: var(--zinc-400);
+  --muted: var(--zinc-300);
+
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Hack", monospace;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background: var(--base);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 3rem 0 1.38rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.052rem;
+}
+
+h2 {
+  font-size: 2.441rem;
+}
+
+h3 {
+  font-size: 1.953rem;
+}
+
+h4 {
+  font-size: 1.563rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+small,
+.text_small {
+  font-size: 0.8rem;
+}
+
+pre,
+code {
+  font-family: var(--font-mono);
+}
+
+code {
+  background: var(--surface);
+  padding: 2px;
+  border-radius: 4px;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+pre > .hljs {
+  background: var(--base);
+  border-radius: 6px;
+  padding: 0px !important;
 }
 
 a {
-  text-decoration: var(--link-decoration);
+  color: var(--subtle);
+  text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-color: var(--text-dark);
-    --background-color: var(--dark);
-  }
+a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
 
-  a {
-    text-decoration: var(--link-decoration-dark);
+.layout-container {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+}
+
+nav.sidebar {
+  min-width: 250px;
+  max-width: 350px;
+}
+
+nav.sidebar li {
+  list-style-type: none;
+}
+
+nav.sidebar li::before {
+  content: "\2192";
+  color: var(--muted);
+  margin-inline-end: 1ch;
+}
+
+#search-container {
+  display: block;
+  width: 80ch;
+  margin:0 auto;
+}
+
+#search-container > input[type="text"] {
+  width: 100%;
+  background: var(--base);
+  color: var(--text);
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 2px solid var(--surface);
+}
+
+#search-container > input[type="text"]:hover {
+  border-color: var(--text);
+}
+
+#search-results {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.mudkip-search-item {
+  margin: 0.25rem;
+  display: block;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --base: var(--zinc-900);
+    --surface: var(--zinc-800);
+    --overlay: var(--zinc-700);
+    --text: var(--zinc-100);
+    --subtle: var(--zinc-400);
+    --muted: var(--zinc-500);
   }
 }
