@@ -16,16 +16,42 @@
 
 ## Installation
 
+### Prebuilt Binaries
+
 You can download the binaries from
 [Releases &rarr;](https://github.com/barelyhuman/mudkip/releases)
 
-or you can compile from source using the below commands, make sure you have
-the nim lang setup on your system
+### Curl for the Prebuilt Binaries
+
+On unix(including macOS)/linux environments you can just use the below commands to download and install the binary
+
+```
+curl -o mudkip.tgz -L https://github.com/barelyhuman/mudkip/releases/latest/download/<platform>-<arch>.tgz
+
+tar -xvzf mudkip.tgz
+
+install <platform>-<arch>/mudkip /usr/local/bin
+```
+
+Replace `<platform>` and `<arch>` with the available values from the releases page
+
+### Compile from source
+
+You can also compile from source
+**prerequisites** make sure you have [nim lang](https://nim-lang.org) installed and running on your system.
+
+Then
+
+1. Clone and build
 
 ```sh
+git clone https://github.com/barelyhuman/mudkip
+cd mudkip
 nimble install
 nimble build -d:release
 ```
+
+2. Copy the binary to a folder that's available on your system `PATH` variable
 
 ## Documentation
 
