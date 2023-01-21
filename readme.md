@@ -9,6 +9,7 @@
 - Atomic File Processor
 - Small (1.1 MB)
 - File Watcher (Monitor file changes)
+- (Optional) Client sided search, if JS is enabled
 
 ## Things missing
 
