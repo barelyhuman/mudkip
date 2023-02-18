@@ -18,7 +18,7 @@ that the compiler with replace at build time.
 
 `%baseurl%`
 
-Example, if you build this with the `--baseurl="/mudkip/"` then the following would be the html output
+Example, if you build this with the `--baseurl="/mudkip/"` then for the following markdown the html output would be as shown below
 
 ```md
 - [Home](%baseurl%)
