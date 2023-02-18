@@ -5,6 +5,7 @@
 - [Home](/)
 - [Getting Started](/getting-started)
 - [Sidebar](/sidebar)
+- [Template Variables](/template-variables)
 - [CLI Flag Reference](/cli)
 - [CI/CD Snippets](/ci)
 

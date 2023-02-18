@@ -77,6 +77,8 @@ proc buildSidebar(): string =
     sidebarContent = replace(sidebarContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
 
+  sidebarContent = replace(sidebarContent, "%baseurl%", appState.baseUrl)
+
   return section(
     nav(class = "sidebar",
       markdown(sidebarContent)
@@ -108,11 +110,13 @@ proc fileToHTML(path: string, output: string) =
   var fileNameToProcess = extractFilename(path)
 
   if not (fileNameToProcess.endsWith("html") or fileNameToProcess.endsWith("md")):
-    return    
+    return
 
   if appState.baseUrl != "/":
     fileContent = replace(fileContent, re"\]\(\/",
         "]"&"("&appState.baseUrl)
+
+  fileContent = replace(fileContent, "%baseurl%", appState.baseUrl)
 
   var compiledContentHTML = markdown(fileContent)
 
