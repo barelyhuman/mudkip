@@ -5,7 +5,7 @@ import "./utils/cli"
 import "./styles"
 import "markdown"
 
-import mudkip/search
+import "./search"
 
 type FileMeta = object
   path: string
