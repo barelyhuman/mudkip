@@ -78,6 +78,7 @@ proc buildSidebar(): string =
         "]"&"("&appState.baseUrl)
 
   sidebarContent = replace(sidebarContent, "%baseurl%", appState.baseUrl)
+  sidebarContent = replace(sidebarContent, "\\%baseurl\\%", "%baseurl%")
 
   return section(
     nav(class = "sidebar",
@@ -117,6 +118,7 @@ proc fileToHTML(path: string, output: string) =
         "]"&"("&appState.baseUrl)
 
   fileContent = replace(fileContent, "%baseurl%", appState.baseUrl)
+  fileContent = replace(fileContent, "\\%baseurl\\%", "%baseurl%")
 
   var compiledContentHTML = markdown(fileContent)
 
