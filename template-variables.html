@@ -12,14 +12,15 @@
 <p>Added in <code>v0.1.8</code></p>
 <p>These are custom variables that you can use in your markdown files and will be replaced by parameters
 that the compiler with replace at build time.</p>
-<p><code>/mudkip/</code></p>
+<p>You can escape the template variables by prefixing <code>%</code> with a backward slash <code>\%</code>;</p>
+<p><code>%baseurl%</code></p>
 <p>Example, if you build this with the <code>--baseurl=&quot;/mudkip/&quot;</code> then for the following markdown the html output would be as shown below</p>
-<pre><code class="language-md">- [Home](/mudkip/)
-- [Getting Started](/mudkip/getting-started)
-- [Sidebar](/mudkip/sidebar)
-- [Template Variables](/mudkip/template-variables)
-- [CLI Flag Reference](/mudkip/cli)
-- [CI/CD Snippets](/mudkip/ci)
+<pre><code class="language-md">- [Home](%baseurl%)
+- [Getting Started](%baseurl%getting-started)
+- [Sidebar](%baseurl%sidebar)
+- [Template Variables](%baseurl%template-variables)
+- [CLI Flag Reference](%baseurl%cli)
+- [CI/CD Snippets](%baseurl%ci)
 </code></pre>
 <pre><code class="language-html">&lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;/mudkip/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
