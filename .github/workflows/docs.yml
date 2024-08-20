@@ -1,5 +1,9 @@
 name: Docs
 on: [push]
+
+permissions:
+  contents: write
+
 jobs:
   build-docs:
     concurrency: ci-${{ github.ref }}
@@ -14,6 +18,5 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}
           branch: gh-pages
           folder: dist
