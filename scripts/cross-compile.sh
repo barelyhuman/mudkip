@@ -2,12 +2,17 @@
 
 set -euxo pipefail
 
-nimxc c --target linux-amd64 --outdir:./bin/linux-amd64 src/mudkip.nim
-nimxc c --target macosx-amd64 --outdir:./bin/macosx-amd64 src/mudkip.nim
-nimxc c --target macosx-arm64 --outdir:./bin/macosx-arm64 src/mudkip.nim
-nimxc c --target windows-amd64 --outdir:./bin/windows-amd64 src/mudkip.nim
-nimxc c --target windows-arm64 --outdir:./bin/windows-arm64 src/mudkip.nim
-nimxc c --target windows-i386 --outdir:./bin/windows-i386 src/mudkip.nim
+build_commands=(' nimble install -y \
+     ; nim c -d:release --opt:size -o:bin/linux-amd64/mudkip src/mudkip.nim && strip -s bin/linux-amd64/mudkip \
+     ; nim c -d:release --opt:size --cpu:arm64 --os:linux -o:bin/linux-arm64/mudkip src/mudkip.nim && strip -s bin/linux-arm64/mudkip  \
+     ; nim c -d:release --opt:size -d:mingw --cpu:i386 -o:bin/windows-386/mudkip.exe src/mudkip.nim \
+     ; nim c -d:release --opt:size -d:mingw --cpu:amd64 -o:bin/windows-amd64/mudkip.exe src/mudkip.nim
+ ')
+
+ # run a docker container with osxcross and cross compile everything
+ docker run -it --rm -v `pwd`:/app \
+    $(docker build . -q) \
+    /bin/bash -c "$build_commands"
 
 if [ "$(uname -s)" = "Darwin" ]
 then 
