@@ -19,8 +19,8 @@ docker run -it --rm -v `pwd`:/usr/local/src \
 
 if [ "$(uname -s)" = "Darwin" ]
 then 
-    nim c -d:release --os:macosx --cpu:amd64 -o:bin/darwin-amd64/mudkip src/mudkip.nim; strip bin/darwin-amd64/mudkip 
-    nim c -d:release --os:macosx --cpu:arm64 -o:bin/darwin-arm64/mudkip src/mudkip.nim; strip bin/darwin-arm64/mudkip  
+    nimble release_amd
+    nimble release_arm
 fi
 
 # create archives
